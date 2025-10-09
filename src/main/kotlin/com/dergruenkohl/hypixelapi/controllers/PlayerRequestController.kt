@@ -15,8 +15,11 @@ class PlayerRequestController(
 ) {
     private val log = LogManager.getLogger()
     @GetMapping("/player/{ign}")
-    suspend fun getPlayer(@PathVariable ign: String, @RequestHeader("Authorization") apiKey: String): String {
+    suspend fun getPlayer(@PathVariable ign: String,
+                          @RequestHeader("API-Key") apiKey: String,
+                          @RequestHeader("User-Agent") userAgent: String
+    ): String {
         log.info("Player endpoint called with $ign")
-        return playerRequestService.getPlayerData(uuidService.getUUID(ign), apiKey)
+        return playerRequestService.getPlayerData(uuidService.getUUID(ign), apiKey, userAgent)
     }
 }

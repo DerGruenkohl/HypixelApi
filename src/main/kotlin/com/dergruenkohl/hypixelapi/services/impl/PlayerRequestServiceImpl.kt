@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class PlayerRequestServiceImpl(private val client: HttpClient): PlayerRequestService {
-    override suspend fun getPlayerData(uuid: String, apiKey: String): String {
+    override suspend fun getPlayerData(uuid: String, apiKey: String, userAgent: String): String {
         return client.get("https://api.hypixel.net/player?uuid=$uuid"){
             header("API-key", apiKey)
-            userAgent("Api-Wrapper / Original agent: dev")
+            userAgent(userAgent)
         }.bodyAsText()
     }
 }
