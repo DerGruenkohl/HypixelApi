@@ -6,7 +6,8 @@ data class SkyblockProfileMember(
     @JsonProperty("player_id")
     val uuid: String,
     @JsonProperty("player_data")
-    val playerData: SkyblockProfileMemberData
+    val playerData: SkyblockProfileMemberData,
+    val collection: Map<String, Long> = emptyMap()
 )
 data class SkyblockProfileMemberData(
     @JsonProperty("last_death")
