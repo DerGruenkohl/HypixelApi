@@ -25,7 +25,7 @@ class CollectionController(
     @ApiResponse(responseCode = "200", description = "Successfully retrieved collections")
     suspend fun getPlayerCollections(
         @Parameter(description = "Ingame name") @PathVariable ign: String,
-        @Parameter(hidden = false) @RequestHeader("API-Key") apiKey: String,
+        @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
         @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
     ): Collections {
         log.info("Getting collections for $ign")
