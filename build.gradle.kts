@@ -34,6 +34,7 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation")
     implementation("io.ktor:ktor-serialization-jackson")
 
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")

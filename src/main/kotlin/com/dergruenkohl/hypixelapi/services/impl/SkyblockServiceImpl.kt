@@ -4,6 +4,7 @@ import com.dergruenkohl.hypixelapi.client.data.SkyblockProfile
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfileMember
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfiles
 import com.dergruenkohl.hypixelapi.services.SkyblockService
+import com.github.benmanes.caffeine.cache.Cache
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -13,7 +14,11 @@ import io.ktor.http.userAgent
 import org.springframework.stereotype.Service
 
 @Service
-class SkyblockServiceImpl(private val client: HttpClient): SkyblockService {
+class SkyblockServiceImpl(
+    private val client: HttpClient,
+    private val profilesCache: Cache<String, SkyblockProfiles>,
+    private val profileCache: Cache<String, SkyblockProfile>
+): SkyblockService {
     override suspend fun getSelectedProfileId(
         uuid: String,
         apiKey: String,
@@ -45,10 +50,16 @@ class SkyblockServiceImpl(private val client: HttpClient): SkyblockService {
         apiKey: String,
         userAgent: String
     ): List<SkyblockProfile> {
-        return client.get("https://api.hypixel.net/v2/skyblock/profiles?uuid=$uuid"){
-            header("API-key", apiKey)
-            userAgent(userAgent)
-        }.body<SkyblockProfiles>().profiles
+        val url = "https://api.hypixel.net/v2/skyblock/profiles?uuid=$uuid"
+        val profiles = profilesCache.getIfPresent(url) ?: run {
+            val profileResponse  = client.get(url){
+                header("API-key", apiKey)
+                userAgent(userAgent)
+            }.body<SkyblockProfiles>()
+            profilesCache.put(url, profileResponse)
+            profileResponse
+        }
+        return profiles.profiles
     }
 
     override suspend fun getProfile(
@@ -56,9 +67,15 @@ class SkyblockServiceImpl(private val client: HttpClient): SkyblockService {
         apiKey: String,
         userAgent: String
     ): SkyblockProfile {
-        return client.get("https://api.hypixel.net/v2/skyblock/profile?profile=$profileId"){
-            header("API-key", apiKey)
-            userAgent(userAgent)
-        }.body()
+        val url = "https://api.hypixel.net/v2/skyblock/profiles?profile=$profileId"
+        val profile = profileCache.getIfPresent(url) ?: run {
+            val profileResponse = client.get(url){
+                header("API-key", apiKey)
+                userAgent(userAgent)
+            }.body<SkyblockProfile>()
+            profileCache.put(url, profileResponse)
+            profileResponse
+        }
+        return profile
     }
 }
