@@ -1,8 +1,9 @@
 package com.dergruenkohl.hypixelapi.data
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import kotlin.text.compareTo
+import kotlinx.serialization.Serializable
 
+
+@Serializable
 data class Skill(
     val experience: Double,
     val level: Int,
@@ -32,6 +33,7 @@ data class Skill(
     }
 }
 
+@Serializable
 data class Skills(
     val fishing: Skill,
     val alchemy: Skill,

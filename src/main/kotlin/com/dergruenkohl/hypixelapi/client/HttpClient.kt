@@ -7,14 +7,10 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.HttpRequestPipeline
 import io.ktor.client.request.header
-import io.ktor.client.statement.HttpReceivePipeline
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
-import io.ktor.http.isSuccess
-import io.ktor.serialization.jackson.jackson
-import io.ktor.util.AttributeKey
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -32,9 +28,10 @@ class HttpClient(private val httpCache: Cache<String, String>) {
         }
 
         install(ContentNegotiation) {
-            jackson {
-                configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            }
+            json(Json {
+                ignoreUnknownKeys = true
+                encodeDefaults = true
+            })
         }
 
         defaultRequest {

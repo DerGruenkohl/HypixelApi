@@ -1,18 +1,18 @@
 package com.dergruenkohl.hypixelapi.client.data
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Schema(hidden = true)
+@Serializable
 data class SkyblockProfile(
     val success: Boolean = true,
-    @JsonProperty("profile_id")
+    @SerialName("profile_id")
     val profileId: String = "ProfileId not found",
-//    @JsonProperty("community_upgrades")
-//    val communityUpgrades: String,
-    @JsonProperty("created_at")
+    @SerialName("created_at")
     val createdAt: Long = -1L,
-    @JsonProperty("cute_name")
+    @SerialName("cute_name")
     val cuteName: String = "cute_name not found",
     val selected: Boolean = false,
     val members: Map<String, SkyblockProfileMember>

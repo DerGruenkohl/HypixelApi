@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.2.10"
     kotlin("plugin.spring") version "2.2.10"
+    kotlin("plugin.serialization") version "2.2.10"
     id("org.springframework.boot") version "4.0.0-M3"
     id("io.spring.dependency-management") version "1.1.7"
     id("io.ktor.plugin") version "3.3.1"
@@ -15,7 +16,6 @@ java {
         languageVersion = JavaLanguageVersion.of(24)
     }
 }
-val snippetsDir = file("build/generated-snippets")
 
 repositories {
     mavenCentral()
@@ -27,14 +27,13 @@ dependencies {
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:3.0.0-M1")
 
     implementation("io.ktor:ktor-client-core")
     implementation("io.ktor:ktor-client-cio")
     implementation("io.ktor:ktor-client-logging")
     implementation("io.ktor:ktor-client-content-negotiation")
-    implementation("io.ktor:ktor-serialization-jackson")
+    implementation("io.ktor:ktor-serialization-kotlinx-json")
 
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.2")
 
