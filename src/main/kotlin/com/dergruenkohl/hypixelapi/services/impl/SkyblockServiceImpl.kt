@@ -3,6 +3,8 @@ package com.dergruenkohl.hypixelapi.services.impl
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfile
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfileMember
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfiles
+import com.dergruenkohl.hypixelapi.data.Skills
+import com.dergruenkohl.hypixelapi.mapper.SkillMapper
 import com.dergruenkohl.hypixelapi.services.SkyblockService
 import com.github.benmanes.caffeine.cache.Cache
 import io.ktor.client.HttpClient
@@ -77,5 +79,15 @@ class SkyblockServiceImpl(
             profileResponse
         }
         return profile
+    }
+
+    override suspend fun getSkills(
+        uuid: String,
+        apiKey: String,
+        userAgent: String
+    ): Skills {
+        val selectedProfile = getSelectedProfileMember(uuid, apiKey, userAgent)
+        val profileSkills = selectedProfile.playerData.skills
+        return SkillMapper.fromSkyblockProfileMemberSkills(profileSkills)
     }
 }

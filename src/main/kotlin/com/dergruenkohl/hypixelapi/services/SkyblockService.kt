@@ -2,6 +2,7 @@ package com.dergruenkohl.hypixelapi.services
 
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfile
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfileMember
+import com.dergruenkohl.hypixelapi.data.Skills
 
 
 /**
@@ -13,4 +14,5 @@ interface SkyblockService {
     suspend fun getSelectedProfileMember(uuid: String, apiKey: String, userAgent: String): SkyblockProfileMember
     suspend fun getProfiles(uuid: String, apiKey: String, userAgent: String): List<SkyblockProfile>
     suspend fun getProfile(profileId: String, apiKey: String, userAgent: String): SkyblockProfile
+    suspend fun getSkills(uuid: String, apiKey: String, userAgent: String): Skills
 }
