@@ -1,6 +1,7 @@
 package com.dergruenkohl.hypixelapi.services.impl
 
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfile
+import com.dergruenkohl.hypixelapi.client.data.SkyblockProfileMember
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfiles
 import com.dergruenkohl.hypixelapi.services.SkyblockService
 import io.ktor.client.HttpClient
@@ -29,6 +30,14 @@ class SkyblockServiceImpl(private val client: HttpClient): SkyblockService {
     ): SkyblockProfile {
         val profiles = getProfiles(uuid, apiKey, userAgent)
         return profiles.first { it.selected }
+    }
+
+    override suspend fun getSelectedProfileMember(
+        uuid: String,
+        apiKey: String,
+        userAgent: String
+    ): SkyblockProfileMember {
+        return getSelectedProfile(uuid, apiKey, userAgent).members.getValue(uuid)
     }
 
     override suspend fun getProfiles(

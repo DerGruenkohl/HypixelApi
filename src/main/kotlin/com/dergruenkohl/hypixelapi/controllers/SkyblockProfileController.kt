@@ -1,6 +1,7 @@
 package com.dergruenkohl.hypixelapi.controllers
 
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfile
+import com.dergruenkohl.hypixelapi.client.data.SkyblockProfileMember
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfiles
 import com.dergruenkohl.hypixelapi.services.PlayerRequestService
 import com.dergruenkohl.hypixelapi.services.SkyblockService
@@ -24,5 +25,21 @@ class SkyblockProfileController(
     ): List<SkyblockProfile> {
         log.info("getting profiles for: $ign")
         return skyblockService.getProfiles(uuidService.getUUID(ign), apiKey, userAgent)
+    }
+    @GetMapping("/profiles/{ign}/selected")
+    suspend fun getSelectedProfile(@PathVariable ign: String,
+                          @RequestHeader("API-Key") apiKey: String,
+                          @RequestHeader("User-Agent") userAgent: String
+    ): SkyblockProfile {
+        log.info("getting selected profile for: $ign")
+        return skyblockService.getSelectedProfile(uuidService.getUUID(ign), apiKey, userAgent)
+    }
+    @GetMapping("/profiles/{ign}/selected/member")
+    suspend fun getSelectedProfileMember(@PathVariable ign: String,
+                          @RequestHeader("API-Key") apiKey: String,
+                          @RequestHeader("User-Agent") userAgent: String
+    ): SkyblockProfileMember {
+        log.info("getting selected profile member for: $ign")
+        return skyblockService.getSelectedProfileMember(uuidService.getUUID(ign), apiKey, userAgent)
     }
 }
