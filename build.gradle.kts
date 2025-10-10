@@ -15,6 +15,7 @@ java {
         languageVersion = JavaLanguageVersion.of(24)
     }
 }
+val snippetsDir = file("build/generated-snippets")
 
 repositories {
     mavenCentral()
@@ -27,6 +28,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:3.0.0-M1")
 
     implementation("io.ktor:ktor-client-core")
     implementation("io.ktor:ktor-client-cio")

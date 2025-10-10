@@ -1,7 +1,9 @@
 package com.dergruenkohl.hypixelapi.client.data
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(hidden = true)
 data class SkyblockProfileMember(
     @JsonProperty("player_id")
     val uuid: String,
@@ -9,6 +11,7 @@ data class SkyblockProfileMember(
     val playerData: SkyblockProfileMemberData,
     val collection: Map<String, Long> = emptyMap()
 )
+@Schema(hidden = true)
 data class SkyblockProfileMemberData(
     @JsonProperty("last_death")
     val lastDeath: Long = -1L,
@@ -18,6 +21,7 @@ data class SkyblockProfileMemberData(
     val skills: SkyblockProfileMemberSkills = SkyblockProfileMemberSkills()
 
 )
+@Schema(hidden = true)
 data class SkyblockProfileMemberSkills(
     @JsonProperty("SKILL_FISHING")
     val fishing: Double = 0.0,

@@ -1,7 +1,9 @@
 package com.dergruenkohl.hypixelapi.client.data
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(hidden = true)
 data class SkyblockProfile(
     val success: Boolean = true,
     @JsonProperty("profile_id")
