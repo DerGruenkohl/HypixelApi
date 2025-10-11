@@ -2,7 +2,6 @@ package com.dergruenkohl.hypixelapi.client.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class DungeonData(
@@ -29,11 +28,9 @@ data class DungeonType(
     val tierCompletions: Map<String, Double> = emptyMap(),
     @SerialName("fastest_time")
     val fastestTime: Map<String, Double> = emptyMap(),
-    @SerialName("times_played")
-    val timesPlayed: Map<String, Double> = emptyMap(),
     val experience: Double = 0.0,
     @SerialName("fastest_time_s_plus")
     val fastestTimeSPlus: Map<String, Double> = emptyMap(),
-    @SerialName("fastest_time_")
+    @SerialName("fastest_time_s")
     val fastestTimeS: Map<String, Double> = emptyMap(),
 )
