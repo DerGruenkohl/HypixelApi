@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "Resources", description = "Get static resources currently only collection data")
 class ResourcesController(private val collectionService: CollectionService) {
 
-    @GetMapping("/resources/collections")
+    @GetMapping("/v1/resources/collections")
     suspend fun getCollections() = collectionService.retrieveCollectionData()
 }

@@ -22,7 +22,7 @@ class SkyblockProfileController(
     private val skyblockService: SkyblockService,
 ) {
     private val log = LogManager.getLogger()
-    @GetMapping("/profiles/{ign}")
+    @GetMapping("/v1/profiles/{ign}")
     suspend fun getPlayer(
                           @Parameter(description = "Ingame name") @PathVariable ign: String,
                           @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
@@ -31,7 +31,7 @@ class SkyblockProfileController(
         log.info("getting profiles for: $ign")
         return skyblockService.getProfiles(uuidService.getUUID(ign), apiKey, userAgent)
     }
-    @GetMapping("/profiles/{ign}/selected")
+    @GetMapping("/v1/profiles/{ign}/selected")
     suspend fun getSelectedProfile(
                                    @Parameter(description = "Ingame name") @PathVariable ign: String,
                                    @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
@@ -40,7 +40,7 @@ class SkyblockProfileController(
         log.info("getting selected profile for: $ign")
         return skyblockService.getSelectedProfile(uuidService.getUUID(ign), apiKey, userAgent)
     }
-    @GetMapping("/profiles/{ign}/selected/member")
+    @GetMapping("/v1/profiles/{ign}/selected/member")
     suspend fun getSelectedProfileMember(
                                          @Parameter(description = "Ingame name") @PathVariable ign: String,
                                          @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
@@ -49,7 +49,7 @@ class SkyblockProfileController(
         log.info("getting selected profile member for: $ign")
         return skyblockService.getSelectedProfileMember(uuidService.getUUID(ign), apiKey, userAgent)
     }
-    @GetMapping("/skills/{ign}")
+    @GetMapping("/v1/skills/{ign}")
     suspend fun getSkills(
                           @Parameter(description = "Ingame name") @PathVariable ign: String,
                           @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,

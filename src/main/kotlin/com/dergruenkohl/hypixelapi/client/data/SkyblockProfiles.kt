@@ -7,5 +7,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SkyblockProfiles(
     val success: Boolean,
-    val profiles: List<SkyblockProfile>
+    val profiles: List<SkyblockProfile> = emptyList(),
+    val cause: String? = null
 )

@@ -20,7 +20,7 @@ class CollectionController(
 ) {
     private val log = LogManager.getLogger()
 
-    @GetMapping("/collections/{ign}")
+    @GetMapping("/v1/collections/{ign}")
     @Operation(summary = "Get player collections", description = "Retrieves all collections for a specific player by IGN")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved collections")
     suspend fun getPlayerCollections(
@@ -32,7 +32,7 @@ class CollectionController(
         return collectionMapper.mapTo(collectionService.getPlayerCollections(uuidService.getUUID(ign), apiKey, userAgent))
     }
 
-    @GetMapping("/collections/{ign}/{type}")
+    @GetMapping("/v1/collections/{ign}/{type}")
     @Operation(summary = "Get player collections by type")
     suspend fun getPlayerCollectionsByType(
         @Parameter(description = "Player in-game name") @PathVariable ign: String,

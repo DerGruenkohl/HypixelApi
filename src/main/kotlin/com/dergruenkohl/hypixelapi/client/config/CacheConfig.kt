@@ -1,5 +1,6 @@
 package com.dergruenkohl.hypixelapi.client.config
 
+import com.dergruenkohl.hypixelapi.client.data.HypixelPlayerReply
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfile
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfiles
 import com.github.benmanes.caffeine.cache.Cache
@@ -22,6 +23,11 @@ class CacheConfig {
         .build()
     @Bean
     fun skyblockProfileCache(): Cache<String, SkyblockProfile> = Caffeine.newBuilder()
+        .expireAfterWrite(Duration.ofMinutes(5))
+        .maximumSize(1000)
+        .build()
+    @Bean
+    fun hypixelPlayerCache(): Cache<String, HypixelPlayerReply> = Caffeine.newBuilder()
         .expireAfterWrite(Duration.ofMinutes(5))
         .maximumSize(1000)
         .build()

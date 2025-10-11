@@ -15,5 +15,6 @@ data class SkyblockProfile(
     @SerialName("cute_name")
     val cuteName: String = "cute_name not found",
     val selected: Boolean = false,
-    val members: Map<String, SkyblockProfileMember>
+    val members: Map<String, SkyblockProfileMember> = emptyMap(),
+    val cause: String? = null
 )

@@ -4,6 +4,7 @@ import com.dergruenkohl.hypixelapi.client.data.SkyblockProfile
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfileMember
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfiles
 import com.dergruenkohl.hypixelapi.data.Skills
+import com.dergruenkohl.hypixelapi.exceptions.HypixelRequestException
 import com.dergruenkohl.hypixelapi.mapper.SkillMapper
 import com.dergruenkohl.hypixelapi.services.SkyblockService
 import com.github.benmanes.caffeine.cache.Cache
@@ -11,7 +12,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.header
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.userAgent
 import org.springframework.stereotype.Service
 
@@ -54,10 +54,14 @@ class SkyblockServiceImpl(
     ): List<SkyblockProfile> {
         val url = "https://api.hypixel.net/v2/skyblock/profiles?uuid=$uuid"
         val profiles = profilesCache.getIfPresent(url) ?: run {
-            val profileResponse  = client.get(url){
+            val response  = client.get(url){
                 header("API-key", apiKey)
                 userAgent(userAgent)
-            }.body<SkyblockProfiles>()
+            }
+            val profileResponse = response.body<SkyblockProfiles>()
+            if(!profileResponse.success){
+                throw HypixelRequestException(profileResponse.cause, response.status)
+            }
             profilesCache.put(url, profileResponse)
             profileResponse
         }
@@ -71,10 +75,14 @@ class SkyblockServiceImpl(
     ): SkyblockProfile {
         val url = "https://api.hypixel.net/v2/skyblock/profiles?profile=$profileId"
         val profile = profileCache.getIfPresent(url) ?: run {
-            val profileResponse = client.get(url){
+            val response = client.get(url){
                 header("API-key", apiKey)
                 userAgent(userAgent)
-            }.body<SkyblockProfile>()
+            }
+            val profileResponse = response.body<SkyblockProfile>()
+            if(!profileResponse.success){
+                throw HypixelRequestException(profileResponse.cause, response.status)
+            }
             profileCache.put(url, profileResponse)
             profileResponse
         }
