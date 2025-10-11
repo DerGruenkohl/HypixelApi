@@ -11,7 +11,8 @@ data class SkyblockProfileMember(
     val uuid: String,
     @SerialName("player_data")
     val playerData: SkyblockProfileMemberData,
-    val collection: Map<String, Long> = emptyMap()
+    val collection: Map<String, Long> = emptyMap(),
+    val dungeons: DungeonData = DungeonData()
 )
 @Schema(hidden = true)
 @Serializable
