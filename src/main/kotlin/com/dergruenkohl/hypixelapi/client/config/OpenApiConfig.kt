@@ -15,7 +15,8 @@ class OpenApiConfig {
             .info(Info()
                 .title("Hypixel API")
                 .version("1.0")
-                .description("Hypixel Skyblock API Wrapper"))
+                .description("Hypixel Skyblock API Wrapper")
+            )
             .servers(listOf(Server().url("https://api.dergruenkohl.com").description("API v1")))
     }
 

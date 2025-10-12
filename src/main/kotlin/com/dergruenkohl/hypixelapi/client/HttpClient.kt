@@ -1,7 +1,6 @@
 package com.dergruenkohl.hypixelapi.client
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.github.benmanes.caffeine.cache.Cache
+
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -15,8 +14,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class HttpClient(private val httpCache: Cache<String, String>) {
-
+class HttpClient() {
 
     @Bean
     fun getHttpClient(): HttpClient = HttpClient(CIO) {
