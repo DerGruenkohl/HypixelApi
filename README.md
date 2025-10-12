@@ -7,7 +7,7 @@ Api Wrapper containing a bunch of useful endpoints for the hypixel api (you stil
 
 
 # Usage:
-Api docs available at "/v1"
+Api docs available at "/v1"  \
 Live version available at https://api.dergruenkohl.com/v1
 
 # Run Tests:
