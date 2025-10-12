@@ -5,6 +5,8 @@ import com.dergruenkohl.hypixelapi.TestConfiguration
 import com.dergruenkohl.hypixelapi.client.HttpClient
 import com.dergruenkohl.hypixelapi.client.config.CacheConfig
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfile
+import com.dergruenkohl.hypixelapi.client.data.SkyblockProfileMember
+import com.dergruenkohl.hypixelapi.data.Skills
 import com.dergruenkohl.hypixelapi.services.SkyblockService
 import com.dergruenkohl.hypixelapi.services.UUIDService
 import com.dergruenkohl.hypixelapi.services.impl.SkyblockServiceImpl
@@ -44,6 +46,39 @@ class SkyblockProfileControllerTest @Autowired constructor(
             .exchange()
             .expectStatus().isOk
             .expectBodyList(SkyblockProfile::class.java)
+    }
+    @Test
+    fun testProfileEndpointReturnsProfile() {
+        webClient.get()
+            .uri("/v1/profiles/garaf/selected")
+            .header("API-Key", apiKey)
+            .header("User-Agent", "HypixelApi-WrapperTest")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(SkyblockProfile::class.java)
+    }
+    @Test
+    fun testProfileMemberEndpointReturnsProfileMember() {
+        webClient.get()
+            .uri("/v1/profiles/garaf/selected/member")
+            .header("API-Key", apiKey)
+            .header("User-Agent", "HypixelApi-WrapperTest")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(SkyblockProfileMember::class.java)
+    }
+    @Test
+    fun testSkillEndpointReturnsSkill() {
+        webClient.get()
+            .uri("/v1/skills/garaf")
+            .header("API-Key", apiKey)
+            .header("User-Agent", "HypixelApi-WrapperTest")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(Skills::class.java).value {
+                val exp = it?.combat?.experience
+                assert(exp != null && exp > 0)
+            }
     }
 
 }
