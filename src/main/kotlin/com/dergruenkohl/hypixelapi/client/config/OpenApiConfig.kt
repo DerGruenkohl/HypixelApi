@@ -2,17 +2,12 @@ package com.dergruenkohl.hypixelapi.client.config
 
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
-import org.springdoc.core.models.GroupedOpenApi
+import io.swagger.v3.oas.models.servers.Server
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.reactive.config.WebFluxConfigurer
-import org.springframework.web.reactive.function.server.RouterFunction
-import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.web.reactive.function.server.router
-import java.net.URI
 
 @Configuration
-class OpenApiConfig : WebFluxConfigurer {
+class OpenApiConfig {
 
     @Bean
     fun customOpenAPI(): OpenAPI {
@@ -21,12 +16,7 @@ class OpenApiConfig : WebFluxConfigurer {
                 .title("Hypixel API")
                 .version("1.0")
                 .description("Hypixel Skyblock API Wrapper"))
+            .servers(listOf(Server().url("https://api.dergruenkohl.com").description("API v1")))
     }
 
-    @Bean
-    fun indexRedirect(): RouterFunction<ServerResponse> = router {
-        GET("/") {
-            ServerResponse.permanentRedirect(URI.create("/swagger-ui.html")).build()
-        }
-    }
 }

@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     kotlin("jvm") version "2.2.10"
     kotlin("plugin.spring") version "2.2.10"
@@ -8,7 +10,7 @@ plugins {
 }
 
 group = "com.dergruenkohl"
-version = "0.0.1-SNAPSHOT"
+version = "0.1.0"
 description = "HypixelApi"
 
 java {
@@ -49,7 +51,12 @@ kotlin {
         freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
     }
 }
-
+tasks.withType<ShadowJar>{
+    archiveFileName.set("HypixelApi.jar")
+}
+application{
+    mainClass.set("com.dergruenkohl.hypixelapi.HypixelApiApplicationKt")
+}
 tasks.withType<Test> {
     useJUnitPlatform()
 }
