@@ -1,12 +1,19 @@
 package com.dergruenkohl.hypixelapi.controllers
 
+import com.dergruenkohl.hypixelapi.client.data.PlayerClass
+import com.dergruenkohl.hypixelapi.data.ClassLevel
 import com.dergruenkohl.hypixelapi.data.Collections
+import com.dergruenkohl.hypixelapi.data.DungeonCompletion
+import com.dergruenkohl.hypixelapi.data.DungeonCompletions
 import com.dergruenkohl.hypixelapi.data.Dungeons
+import com.dergruenkohl.hypixelapi.data.getByName
+import com.dergruenkohl.hypixelapi.exceptions.BadRequestException
 import com.dergruenkohl.hypixelapi.mapper.DungeonMapper
 import com.dergruenkohl.hypixelapi.services.SkyblockService
 import com.dergruenkohl.hypixelapi.services.UUIDService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.apache.logging.log4j.LogManager
@@ -24,12 +31,68 @@ class DungeonsController(private val sbervice: SkyblockService, private val uuid
     @GetMapping("/v1/dungeons/{ign}")
     @Operation(summary = "Get players Dungeon stats", description = "Retrieves dungeon stats for a specific player by IGN")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved stats")
-    suspend fun getPlayerCollections(
+    suspend fun getPlayerDungeons(
         @Parameter(description = "Ingame name") @PathVariable ign: String,
         @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
         @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
     ): Dungeons {
         log.info("Getting dungeons for $ign")
         return DungeonMapper.map(sbervice.getSelectedProfileMember(uuidService.getUUID(ign), apiKey, userAgent).dungeons)
+    }
+
+    @GetMapping("/v1/dungeons/{ign}/floor/{floor}")
+    @Operation(summary = "Get a players Dungeon floor stats")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved stats")
+    suspend fun getPlayerDungeonFloor(
+        @Parameter(description = "Ingame name") @PathVariable ign: String,
+        @Parameter(description = "Dungeon Floor", examples = [ExampleObject("m1"), ExampleObject("f1") ]) @PathVariable floor: String,
+        @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
+        @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
+    ): DungeonCompletion {
+        log.info("Getting dungeon $floor stats for $ign")
+        val dungeons =  DungeonMapper.map(sbervice.getSelectedProfileMember(uuidService.getUUID(ign), apiKey, userAgent).dungeons)
+        return dungeons.completions.getByName(floor)
+
+    }
+    @GetMapping("/v1/dungeons/{ign}/floor")
+    @Operation(summary = "Get a players Dungeon floor stats")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved stats")
+    suspend fun getPlayerDungeonFloors(
+        @Parameter(description = "Ingame name") @PathVariable ign: String,
+        @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
+        @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
+    ): DungeonCompletions {
+        log.info("Getting dungeon floor stats for $ign")
+        val dungeons =  DungeonMapper.map(sbervice.getSelectedProfileMember(uuidService.getUUID(ign), apiKey, userAgent).dungeons)
+        return dungeons.completions
+
+    }
+
+
+
+    @GetMapping("/v1/dungeons/{ign}/class/{dungeonclass}")
+    @Operation(summary = "Get a players Class level")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved stats")
+    suspend fun getPlayerDungeonClass(
+        @Parameter(description = "Ingame name") @PathVariable ign: String,
+        @Parameter(description = "Dungeon Class", examples = [ExampleObject("healer"), ExampleObject("archer") ]) @PathVariable dungeonclass: String,
+        @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
+        @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
+    ): ClassLevel {
+        log.info("Getting class $dungeonclass stats for $ign")
+        val dungeons =  DungeonMapper.map(sbervice.getSelectedProfileMember(uuidService.getUUID(ign), apiKey, userAgent).dungeons)
+        return dungeons.classLevels[dungeonclass]?: throw BadRequestException("Invalid class name")
+    }
+    @GetMapping("/v1/dungeons/{ign}/class")
+    @Operation(summary = "Get a players Class level")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved stats")
+    suspend fun getPlayerDungeonClasses(
+        @Parameter(description = "Ingame name") @PathVariable ign: String,
+        @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
+        @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
+    ): Map<String, ClassLevel> {
+        log.info("Getting class stats for $ign")
+        val dungeons =  DungeonMapper.map(sbervice.getSelectedProfileMember(uuidService.getUUID(ign), apiKey, userAgent).dungeons)
+        return dungeons.classLevels
     }
 }

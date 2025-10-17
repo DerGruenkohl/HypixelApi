@@ -2,6 +2,7 @@ package com.dergruenkohl.hypixelapi.mapper
 
 import com.dergruenkohl.hypixelapi.client.data.DungeonData
 import com.dergruenkohl.hypixelapi.client.data.DungeonType
+import com.dergruenkohl.hypixelapi.data.ClassLevel
 import com.dergruenkohl.hypixelapi.data.DungeonCompletion
 import com.dergruenkohl.hypixelapi.data.DungeonCompletions
 import com.dergruenkohl.hypixelapi.data.DungeonLevel
@@ -16,6 +17,9 @@ object DungeonMapper {
 
         return Dungeons(
             level = DungeonLevel.fromExp(catacombs.experience),
+            classLevels = dungeonData.playerClasses.map {
+                it.key to ClassLevel.fromExp(it.value.experience)
+            }.toMap(),
             completions = DungeonCompletions(
                 entrance = mapDungeonCompletion(catacombs, "0"),
                 floor1 = mapDungeonCompletion(catacombs, "1"),
