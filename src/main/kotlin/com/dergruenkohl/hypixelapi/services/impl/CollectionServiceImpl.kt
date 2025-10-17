@@ -6,11 +6,9 @@ import com.dergruenkohl.hypixelapi.services.SkyblockService
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
 
 @Service
-@Configuration
 class CollectionServiceImpl(private val client: HttpClient, private val skyblockService: SkyblockService): CollectionService {
 
     private lateinit var collectionData: CollectionData

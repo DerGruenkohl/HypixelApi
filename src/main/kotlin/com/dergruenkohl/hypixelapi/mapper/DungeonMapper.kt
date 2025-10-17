@@ -20,6 +20,7 @@ object DungeonMapper {
             classLevels = dungeonData.playerClasses.map {
                 it.key to ClassLevel.fromExp(it.value.experience)
             }.toMap(),
+            secrets = dungeonData.secrets,
             completions = DungeonCompletions(
                 entrance = mapDungeonCompletion(catacombs, "0"),
                 floor1 = mapDungeonCompletion(catacombs, "1"),

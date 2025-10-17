@@ -66,7 +66,15 @@ class DungeonsController(private val sbervice: SkyblockService, private val uuid
         return dungeons.completions
 
     }
-
+    @GetMapping("/v1/dungeons/{ign}/secrets")
+    @Operation(summary = "Get a players secret counts")
+    suspend fun getSecrets(
+        @Parameter(description = "Ingame name") @PathVariable ign: String,
+        @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
+        @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
+    ): Long{
+        return DungeonMapper.map(sbervice.getSelectedProfileMember(uuidService.getUUID(ign), apiKey, userAgent).dungeons).secrets
+    }
 
 
     @GetMapping("/v1/dungeons/{ign}/class/{dungeonclass}")

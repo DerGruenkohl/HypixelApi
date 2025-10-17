@@ -10,6 +10,7 @@ data class Dungeons(
     val level: DungeonLevel,
     val classLevels: Map<String, ClassLevel>,
     val completions: DungeonCompletions,
+    val secrets: Long
 )
 
 private val levelThresholds = listOf(
