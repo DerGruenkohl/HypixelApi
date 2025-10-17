@@ -13,7 +13,6 @@ import com.dergruenkohl.hypixelapi.services.SkyblockService
 import com.dergruenkohl.hypixelapi.services.UUIDService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.apache.logging.log4j.LogManager
@@ -45,7 +44,7 @@ class DungeonsController(private val sbervice: SkyblockService, private val uuid
     @ApiResponse(responseCode = "200", description = "Successfully retrieved stats")
     suspend fun getPlayerDungeonFloor(
         @Parameter(description = "Ingame name") @PathVariable ign: String,
-        @Parameter(description = "Dungeon Floor", examples = [ExampleObject("m1"), ExampleObject("f1") ]) @PathVariable floor: String,
+        @Parameter(description = "Dungeon Floor", example = "f7") @PathVariable floor: String,
         @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
         @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
     ): DungeonCompletion {
@@ -75,7 +74,7 @@ class DungeonsController(private val sbervice: SkyblockService, private val uuid
     @ApiResponse(responseCode = "200", description = "Successfully retrieved stats")
     suspend fun getPlayerDungeonClass(
         @Parameter(description = "Ingame name") @PathVariable ign: String,
-        @Parameter(description = "Dungeon Class", examples = [ExampleObject("healer"), ExampleObject("archer") ]) @PathVariable dungeonclass: String,
+        @Parameter(description = "Dungeon Class", example = "healer") @PathVariable dungeonclass: String,
         @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
         @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
     ): ClassLevel {
