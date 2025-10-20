@@ -8,7 +8,7 @@ Api Backend for future projects.
 
 # Usage:
 Api docs available at "/v1"  \
-Live version available at https://api.dergruenkohl.com/v1
+Live version available at https://hypixelapi.dergruenkohl.com/
 
 # Run Tests:
 Linux: `./gradlew test` \
