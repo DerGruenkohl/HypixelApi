@@ -23,21 +23,17 @@ class PlayerRequestController(
     @GetMapping("/v1/player/{ign}")
     suspend fun getPlayer(
                           @Parameter(description = "Ingame name") @PathVariable ign: String,
-                          @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
-                          @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
     ): HypixelPlayer {
         log.info("Player endpoint called with $ign")
-        return playerRequestService.getPlayerData(uuidService.getUUID(ign), apiKey, userAgent)
+        return playerRequestService.getPlayerData(uuidService.getUUID(ign))
     }
     @GetMapping("/v1/player/{ign}/discord")
     @Tag(name = "Discord", description = "Get the linked discord of a player")
     suspend fun getPlayerDiscord(
         @Parameter(description = "Ingame name") @PathVariable ign: String,
-        @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
-        @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
     ): String{
         log.info("Getting discord for $ign")
-        return playerRequestService.getPlayerData(uuidService.getUUID(ign), apiKey, userAgent).socialMedia.links.discord
+        return playerRequestService.getPlayerData(uuidService.getUUID(ign)).socialMedia.links.discord
 
     }
 }

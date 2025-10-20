@@ -25,11 +25,9 @@ class CollectionController(
     @ApiResponse(responseCode = "200", description = "Successfully retrieved collections")
     suspend fun getPlayerCollections(
         @Parameter(description = "Ingame name") @PathVariable ign: String,
-        @Parameter(hidden = false, description = "Hypixel Api Key") @RequestHeader("API-Key") apiKey: String,
-        @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
     ): Collections {
         log.info("Getting collections for $ign")
-        return collectionMapper.mapTo(collectionService.getPlayerCollections(uuidService.getUUID(ign), apiKey, userAgent))
+        return collectionMapper.mapTo(collectionService.getPlayerCollections(uuidService.getUUID(ign)))
     }
 
     @GetMapping("/v1/collections/{ign}/{type}")
@@ -37,12 +35,10 @@ class CollectionController(
     suspend fun getPlayerCollectionsByType(
         @Parameter(description = "Player in-game name") @PathVariable ign: String,
         @Parameter(description = "Collection type filter", example = "farming") @PathVariable type: String,
-        @Parameter(hidden = false) @RequestHeader("API-Key") apiKey: String,
-        @Parameter(hidden = true) @RequestHeader("User-Agent") userAgent: String
     ): Collections {
         log.info("Getting $type collections for $ign")
         return collectionMapper
-            .mapTo(collectionService.getPlayerCollections(uuidService.getUUID(ign), apiKey, userAgent))
+            .mapTo(collectionService.getPlayerCollections(uuidService.getUUID(ign)))
             .filter { it.value.collectionType == type.uppercase() }
     }
 }

@@ -3,4 +3,7 @@ spring:
     name: HypixelApi
 springdoc:
   swagger-ui:
-    path: /v1
+    path: /
+
+hypixel:
+  apikey: "Supply via Environment Variable (HYPIXEL_APIKEY)"

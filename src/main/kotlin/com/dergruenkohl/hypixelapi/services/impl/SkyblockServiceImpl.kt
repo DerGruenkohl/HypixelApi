@@ -1,5 +1,6 @@
 package com.dergruenkohl.hypixelapi.services.impl
 
+import com.dergruenkohl.hypixelapi.client.config.ApiConfiguration
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfile
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfileMember
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfiles
@@ -19,44 +20,36 @@ import org.springframework.stereotype.Service
 class SkyblockServiceImpl(
     private val client: HttpClient,
     private val profilesCache: Cache<String, SkyblockProfiles>,
-    private val profileCache: Cache<String, SkyblockProfile>
+    private val profileCache: Cache<String, SkyblockProfile>,
+    private val apiConfig: ApiConfiguration
 ): SkyblockService {
     override suspend fun getSelectedProfileId(
         uuid: String,
-        apiKey: String,
-        userAgent: String
     ): String {
-        val profiles = getProfiles(uuid, apiKey, userAgent)
+        val profiles = getProfiles(uuid)
         return profiles.first { it.selected }.profileId
     }
 
     override suspend fun getSelectedProfile(
         uuid: String,
-        apiKey: String,
-        userAgent: String
     ): SkyblockProfile {
-        val profiles = getProfiles(uuid, apiKey, userAgent)
+        val profiles = getProfiles(uuid)
         return profiles.first { it.selected }
     }
 
     override suspend fun getSelectedProfileMember(
         uuid: String,
-        apiKey: String,
-        userAgent: String
     ): SkyblockProfileMember {
-        return getSelectedProfile(uuid, apiKey, userAgent).members.getValue(uuid)
+        return getSelectedProfile(uuid).members.getValue(uuid)
     }
 
     override suspend fun getProfiles(
         uuid: String,
-        apiKey: String,
-        userAgent: String
     ): List<SkyblockProfile> {
         val url = "https://api.hypixel.net/v2/skyblock/profiles?uuid=$uuid"
         val profiles = profilesCache.getIfPresent(url) ?: run {
             val response  = client.get(url){
-                header("API-key", apiKey)
-                userAgent(userAgent)
+                header("API-Key", apiConfig.apiKey)
             }
             val profileResponse = response.body<SkyblockProfiles>()
             if(!profileResponse.success){
@@ -70,14 +63,11 @@ class SkyblockServiceImpl(
 
     override suspend fun getProfile(
         profileId: String,
-        apiKey: String,
-        userAgent: String
     ): SkyblockProfile {
         val url = "https://api.hypixel.net/v2/skyblock/profiles?profile=$profileId"
         val profile = profileCache.getIfPresent(url) ?: run {
             val response = client.get(url){
-                header("API-key", apiKey)
-                userAgent(userAgent)
+                header("API-Key", apiConfig.apiKey)
             }
             val profileResponse = response.body<SkyblockProfile>()
             if(!profileResponse.success){
@@ -91,10 +81,8 @@ class SkyblockServiceImpl(
 
     override suspend fun getSkills(
         uuid: String,
-        apiKey: String,
-        userAgent: String
     ): Skills {
-        val selectedProfile = getSelectedProfileMember(uuid, apiKey, userAgent)
+        val selectedProfile = getSelectedProfileMember(uuid)
         val profileSkills = selectedProfile.playerData.skills
         return SkillMapper.fromSkyblockProfileMemberSkills(profileSkills)
     }

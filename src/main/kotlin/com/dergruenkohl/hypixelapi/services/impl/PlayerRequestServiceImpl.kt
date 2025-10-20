@@ -1,5 +1,6 @@
 package com.dergruenkohl.hypixelapi.services.impl
 
+import com.dergruenkohl.hypixelapi.client.config.ApiConfiguration
 import com.dergruenkohl.hypixelapi.client.data.HypixelPlayer
 import com.dergruenkohl.hypixelapi.client.data.HypixelPlayerReply
 import com.dergruenkohl.hypixelapi.exceptions.HypixelRequestException
@@ -13,13 +14,12 @@ import io.ktor.http.userAgent
 import org.springframework.stereotype.Service
 
 @Service
-class PlayerRequestServiceImpl(private val client: HttpClient, private val cache: Cache<String, HypixelPlayerReply>): PlayerRequestService {
-    override suspend fun getPlayerData(uuid: String, apiKey: String, userAgent: String): HypixelPlayer {
+class PlayerRequestServiceImpl(private val client: HttpClient, private val cache: Cache<String, HypixelPlayerReply>, private val apiConfig: ApiConfiguration): PlayerRequestService {
+    override suspend fun getPlayerData(uuid: String): HypixelPlayer {
         val url = "https://api.hypixel.net/player?uuid=$uuid"
         val player = cache.getIfPresent(url) ?: run {
             val response  = client.get(url){
-                header("API-key", apiKey)
-                userAgent(userAgent)
+                header("API-Key", apiConfig.apiKey)
             }
             val profileResponse = response.body<HypixelPlayerReply>()
             if(!profileResponse.success){

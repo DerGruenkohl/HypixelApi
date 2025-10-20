@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class OpenApiConfig {
+class OpenApiConfig() {
 
     @Bean
     fun customOpenAPI(): OpenAPI {
@@ -17,7 +17,6 @@ class OpenApiConfig {
                 .version("1.0")
                 .description("Hypixel Skyblock API Wrapper")
             )
-            .servers(listOf(Server().url("https://api.dergruenkohl.com").description("API v1")))
     }
 
 }

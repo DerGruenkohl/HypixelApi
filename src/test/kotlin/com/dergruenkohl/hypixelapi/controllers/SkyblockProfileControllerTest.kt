@@ -1,20 +1,14 @@
 
 package com.dergruenkohl.hypixelapi.controllers
 
-import com.dergruenkohl.hypixelapi.TestConfiguration
+import com.dergruenkohl.hypixelapi.client.config.ApiConfiguration
 import com.dergruenkohl.hypixelapi.client.HttpClient
 import com.dergruenkohl.hypixelapi.client.config.CacheConfig
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfile
 import com.dergruenkohl.hypixelapi.client.data.SkyblockProfileMember
 import com.dergruenkohl.hypixelapi.data.Skills
-import com.dergruenkohl.hypixelapi.services.SkyblockService
-import com.dergruenkohl.hypixelapi.services.UUIDService
 import com.dergruenkohl.hypixelapi.services.impl.SkyblockServiceImpl
 import com.dergruenkohl.hypixelapi.services.impl.UUIDServiceImpl
-import io.ktor.client.call.body
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,10 +19,10 @@ import org.springframework.test.web.reactive.server.WebTestClient
 
 @WebFluxTest(controllers = [SkyblockProfileController::class])
 @ExtendWith(SpringExtension::class)
-@Import(SkyblockServiceImpl::class, UUIDServiceImpl::class, HttpClient::class, CacheConfig::class, TestConfiguration::class)
+@Import(SkyblockServiceImpl::class, UUIDServiceImpl::class, HttpClient::class, CacheConfig::class, ApiConfiguration::class)
 class SkyblockProfileControllerTest @Autowired constructor(
-     webClient: WebTestClient,
-     testConfig: TestConfiguration,
+    webClient: WebTestClient,
+    testConfig: ApiConfiguration,
 ) {
     val webClient =  webClient.mutate()
         .responseTimeout(java.time.Duration.ofSeconds(10)).build()

@@ -20,8 +20,8 @@ class CollectionServiceImpl(private val client: HttpClient, private val skyblock
         return collectionData
     }
 
-    override suspend fun getPlayerCollections(uuid: String, apiKey: String, userAgent: String): Map<String, Long> {
-        val profile = skyblockService.getSelectedProfileMember(uuid, apiKey, userAgent)
+    override suspend fun getPlayerCollections(uuid: String): Map<String, Long> {
+        val profile = skyblockService.getSelectedProfileMember(uuid)
         return profile.collection
     }
 
